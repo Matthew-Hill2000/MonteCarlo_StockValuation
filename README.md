@@ -6,6 +6,5 @@ This is improved upon by utilizing the technique of antithetic variables. for ev
 
 Further to this we can then use moment matching to ensure that the the variance of the sample paths match that of the required distribution by forcing the variance of our random draws from the normal distribution to equal 1. We start by taking our random draws $\phi_i$ using the antithetic technique, and calculate the unbiased estimator for the variance $\nu^2$
 
-'''math
-   \frac{2 \sum_i \phi_i^2}{2n-1} = \nu^2.
-'''
+
+$$\frac{2 \sum_i \phi_i^2}{2n-1} = \nu^2$$
