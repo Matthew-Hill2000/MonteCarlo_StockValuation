@@ -1,6 +1,6 @@
 # StockValuation
 
-This report concerns the calculation of various financial products using a variety of Monte Carlo methods. The first task was to calculate the value of a European put option using a standard Monte Carlo method, followed by the implementation of antithetic variables, moment matching and Halton sequences. The basis of the Monte Carlo method is to simulate many separate paths for the share price, from which we can calculate the option value in each case, taking the average to be our expected value. The simulations are run $N$ number of times, from which the average option value is calculated. This is then repeated $M$ number of times, forming a normally distributed set of Option values and averaged again to find the expected value. This is achieved by using techniques for drawing random variables $\phi_i$ from a normal distribution to simulate the statistical uncertainty in the evolution of the stock price. The initial Monte Carlo method simply uses the pseudo random number generator mt19937 to take draws from the standard normal distribution class of c++. 
+This project concerns the calculation of various financial products using a variety of Monte Carlo methods. The value of a European put option can be calculated using a standard Monte Carlo method, and also with the implementation of antithetic variables, moment matching and Halton sequences. The basis of the Monte Carlo method is to simulate many separate paths for the share price, from which we can calculate the option value in each case, taking the average to be our expected value. The simulations are run $N$ number of times, from which the average option value is calculated. This is then repeated $M$ number of times, forming a normally distributed set of Option values and averaged again to find the expected value. This is achieved by using techniques for drawing random variables $\phi_i$ from a normal distribution to simulate the statistical uncertainty in the evolution of the stock price. The initial Monte Carlo method simply uses the pseudo random number generator mt19937 to take draws from the standard normal distribution class of c++. 
 
 This is improved upon by utilizing the technique of antithetic variables. for every random draw $\phi_i$ from the normal distribution, we also take its negative. This ensures we have a distribution of random draws with mean of zero and hence the mean of the sample paths is also correct. We therefore only have to take $N/2$ random draws to result in $N$ Values. 
 
@@ -24,22 +24,18 @@ For Halton numbers produced from two different primes, we can pair up the Halton
 
 $$y_1 = \cos(2 \pi x_2) \sqrt{-2 \log(x_1)}, \hspace{0.5cm} y_2 = \sin(2 \pi x_1) \sqrt{-2 \log(x_2)}.$$
 
-For the methods using anithetic variables, moment matching and Halton sequences we take only N/2 random draws, such that the final result is N sample paths, allowing us to compare to the standard Monte Carlo method. For the Halton sequence, i included a function to choose two random primes for every sample path such that the paths differed. The algorithm for the Halton sequence is outlined in psuedo code in \cite{11}.
+For the methods using anithetic variables, moment matching and Halton sequences we take only N/2 random draws, such that the final result is N sample paths, allowing us to compare to the standard Monte Carlo method. For the Halton sequence, i included a function to choose two random primes for every sample path such that the paths differed. 
 
-
-#Stock Options
+# Stock Options
  
-The value of the stock price at time t is claimed to be given by the risk-neutral distribution \cite{4}
+The value of the stock price at time t is claimed to be given by the risk-neutral distribution
 
 
 $$S_t = N(f(S_0,t), v^2(S_0, t)t)$$
 
-for some functions $f(S_0,t)$ and $v(S_0,t)$, which in this report is given by
-
+for some functions $f(S_0,t)$ and $v(S_0,t)$, which for this project is taken to be
 
 $$S_t = S_0 (\alpha T + \tan(\beta T)) + \theta \cosh(2 \beta T - \alpha T) + \sigma (1 + \beta T)^2 S_0 e^{2 \gamma - 2 + \alpha T} \sqrt{T} \phi$$
-
-
 
 where 
 
@@ -65,14 +61,13 @@ which then allows us to calculate the option value from
 
 $$P(S_0, t=0) = e^{-rT} \frac{1}{n} \sum_{i=1}^{n} max(X-S_T^i, 0)$$
 
-#Path Dependent Options
+# Path Dependent Options
 
 Assuming that the risk neutral stochastic process follows the SDE
 
 $$ds = f(S,t)dt + v(S,t)dW.$$
 
-For this report we take
-
+For this project we take
 
 $$ds = (\alpha \theta - \beta S)dt + \sigma (|S|)^{\gamma}dW,$$
 
@@ -85,7 +80,7 @@ Since the final stock price is not computed from a single jump, its distribution
 
 $$S^i(t_k) = S^i(t_{k-1}) + f(S^i(t_{k-1}), t_{k-1}) \Delta t + v(S^i(t_{k-1}), t_{k-1})\sqrt{\Delta t} \phi_{i,k-1}$$
 
-In this report we value an Asian option, the payoff of which is given by first taking the average
+In this project we value an Asian option, the payoff of which is given by first taking the average
 
 $$A^i = \frac{1}{K} \sum_{k=1}^{K} S^i(t_k)$$
 
