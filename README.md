@@ -97,23 +97,43 @@ Figure 4 shows a plot of the errors against $N^{-1/2}$ for each of the methods o
 
 I also investigated the difference in time taken for each of the Monte-Carlo methods to run for a range of values of N. As can be seen, the addition of Antithetic variables and Moment Matching doubled the time taken to complete the Monte-Carlo simulation, whilst the Halton method significantly increased the time taken.
 
-\begin{table}[h!]
-\begin{center}
-\begin{tabular}{ |c|c|c|c|c| } 
-\hline
-N & Standard Time & Antithetic Time & Moment-Matching Time & Halton Time  \\
-\hline
-10000 & 0.400 & 0.770 & 0.772 & 4.466 \\ 
-20000 & 0.788 & 1.565 & 1.534 & 9.681 \\ 
-30000 & 1.169 & 2.419 & 2.411 & 15.13 \\ 
-40000 & 1.619 & 3.263 & 3.376 & 20.33 \\ 
-\hline
-\end{tabular}
-\caption{A table showing the time taken in seconds for each of the Monte-Carlo methods to run for a range of values of N.}
-\end{center}
-\end{table}
+## Time Taken for Monte-Carlo Methods
+
+| N     | Standard Time | Antithetic Time | Moment-Matching Time | Halton Time |
+|-------|---------------|-----------------|----------------------|-------------|
+| 10000 | 0.400         | 0.770           | 0.772                | 4.466       |
+| 20000 | 0.788         | 1.565           | 1.534                | 9.681       |
+| 30000 | 1.169         | 2.419           | 2.411                | 15.130      |
+| 40000 | 1.619         | 3.263           | 3.376                | 20.330      |
+
+*Table 1: A table showing the time taken in seconds for each of the Monte-Carlo methods to run for a range of values of N.*
+
+## Path Dependent Options
+
+For the discrete minimum floating-strike lookback call option the value calculated for t=0 through the standard Monte Carlo simulation was $13898.1 \pm 15.693966670393191$. This was calculated with $N = 1000000$ simulations with the stock price observed at $k=30$ equally spaced times. There is no analytical solution to the minimum floating-strike lookback call option with which to compare the results of the Monte-Carlo simulation. \\
+
+I ran a Monte-Carlo simulation to value the path-dependent option for a range of values of $N$. The results of this analysis are shown below in Figure 5.  \\
 
 
+![Figure 5](Figure_5.png)
+*Figure 5: {A plot of the Asian put option value at t=0 for a range of values of the number of sample paths N as well as the mean of all the values.*
+
+Figure 6 shows that the relation between the standard deviation and $N^{-1/2}$ is also linear. It was found that the relation was given by $error = 16603N^{-1/2}-7.04$. \\
+
+
+![Figure 6](Figure_6.png)
+*Figure 6: {A plot of the standard deviation of the path dependent option values against the reciprocal of the square root of the number of sample paths.*
+
+
+Finally, I calculated the derivative of the minimum floating-strike lookback call option with respect to $\alpha$ using the formula
+
+$$\frac{dV}{d\sigma} \approx \frac{V(S_0, t=0;\sigma=0.26+d\sigma)-V(S_0,t=0,\sigma=0.26)}{d\sigma}.$$
+
+The best estimate for the derivative is when $d \sigma$ approaches zero, so I plotted the value of the derivative for a range of values of $d \sigma$ and calculated a linear fit, as can be seen in Figure 7. Taking the derivative axis intercept to be equal to the derivative suggests that the derivative has the value $dV/d\sigma = 49290.6$
+
+
+![Figure 6](Figure_6.png)
+*Figure 6: {A plot of the standard deviation of the path dependent option values against the reciprocal of the square root of the number of sample paths.*
 
 
 
