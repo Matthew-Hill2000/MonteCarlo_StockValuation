@@ -66,7 +66,52 @@ To calculate the value of the contract at $t=0$ using Monte Carlo simulation, we
 
 $$C(S_0, t=0) \approx e^{-rT} \frac{1}{n} \sum_{i=1}^{n} G(S^i, A)$$
 
+# Results
+## Stock Options
 
+The analytical solution to the value of the first financial contract was calculated from equation (5) using numerical quadrature using functions from the Python package SciPy. This value was found to be 7784.1000 with an error of 0.01661. Using a Monte-Carlo simulation, utilising equation (6), the value of the financial contract was found to be 7734.2 $\pm$ 51.6 when the number of simulated stock prices was $N=1000000$, in good agreement with the analytical solution. 
+
+To investigate how the number of simulated stock prices affects the accuracy of the Monte-Carlo simulation, the value of the financial contract was calculated for a range of numbers of simulated stock prices $N$. Figure 1 below shows how the value of the financial contract converges to the analytical value with increasing $N$. 
+
+As a result of the central limit theorem, the error of the Monte-Carlo simulation is expected to scale proportionally to $N^{-1/2}$. To demonstrate this, The plot in Figure 2 was created which shows the standard deviation against $N^{-1/2}$ and a linear fit was calculated to follow the relationship of $error = 51000N^{-1/2} + 4.99$. 
+
+There exist a few methods by which the standard Monte-Carlo method can be improved that I investigated for this report. Firstly, Antithetic variables were used by calculating the stock price with the randomly sampled $\phi$ of equation (3) as well as its negative $-\phi$ to ensure the distribution is centred around zero. This is expanded upon by moment matching, in which each of the $\phi$ and $-\phi$ values sampled are divided by the square root of the variance of the entire sample to ensure the sample also has a variance of one. if $N$ values of $\phi$ are sampled for these two methods, the resulting final sample will have $2N$ samples. Finally, The Halton Sequence was used to create a set of coordinates $(x_1, x_2)$, uniformly distributed within the unit square. This process is started by selecting two prime numbers $a$ and $b$, before representing a series of numbers in the base $a^{-1}$ to give the $x_1$ values and $b^{-1}$ to get the $x_2$ values. A set of $2N$ normally distributed numbers can be created from $N$ $(x_1, x_2)$ coordinates using the Box-Muller method with the equations
+
+$$y_1 = \cos(2 \pi x_2) \sqrt{-2 \log(x_1)}, \hspace{1mm} y_2 = \cos(2 \pi x_1) \sqrt{-2 \log(x_2)}$$
+
+These three methods were compared to the original Monte-Carlo method by using them, in turn, to calculate the value of the financial contract for a range of values of $N$. The results of these simulations can be seen in Figure 3. It can be seen from Figure 3 that the introduction of the extra methods dramatically increases the efficiency of the Monte-Carlo simulations, with all three methods showing a similar level of improvement.
+
+![Figure 1](Figure_1.png)
+*Figure 1: A plot of the option value at t=0 for a range of values of the number of sample paths N, with error bars showing the standard deviation of the simulations run for each value of N.*
+
+![Figure 2](Figure_2.png)
+*Figure 2: A plot of the standard deviation of the option values against the reciprocal of the square root of the number of sample paths along with a linear fit.*
+
+![Figure 3](Figure_3.png)
+*Figure 3: A plot of the option value for a range of values of the number of sample paths N for the different Monte-Carlo techniques.*
+
+Figure 4 shows a plot of the errors against $N^{-1/2}$ for each of the methods over a range of values of $N$. For each method, a linear fit has been calculated. All three improvement methods have very similar convergence rates, however, at small N, moment matching and Halton sequence methods slightly outperform the antithetic variables method. 
+
+![Figure 4](Figure_4.png)
+*Figure 4: A plot of the error for the option value against N^{-1/2} for the different techniques.*
+
+I also investigated the difference in time taken for each of the Monte-Carlo methods to run for a range of values of N. As can be seen, the addition of Antithetic variables and Moment Matching doubled the time taken to complete the Monte-Carlo simulation, whilst the Halton method significantly increased the time taken.
+
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{ |c|c|c|c|c| } 
+\hline
+N & Standard Time & Antithetic Time & Moment-Matching Time & Halton Time  \\
+\hline
+10000 & 0.400 & 0.770 & 0.772 & 4.466 \\ 
+20000 & 0.788 & 1.565 & 1.534 & 9.681 \\ 
+30000 & 1.169 & 2.419 & 2.411 & 15.13 \\ 
+40000 & 1.619 & 3.263 & 3.376 & 20.33 \\ 
+\hline
+\end{tabular}
+\caption{A table showing the time taken in seconds for each of the Monte-Carlo methods to run for a range of values of N.}
+\end{center}
+\end{table}
 
 
 
